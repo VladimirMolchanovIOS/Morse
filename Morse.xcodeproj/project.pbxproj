@@ -15,6 +15,10 @@
 		B605CC3D1D5B3F680060AD72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B605CC3B1D5B3F680060AD72 /* LaunchScreen.storyboard */; };
 		B605CC481D5B3F680060AD72 /* MorseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC471D5B3F680060AD72 /* MorseTests.swift */; };
 		B605CC531D5B3F680060AD72 /* MorseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC521D5B3F680060AD72 /* MorseUITests.swift */; };
+		B605CC611D5B46760060AD72 /* MorseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC601D5B46760060AD72 /* MorseRepresentation.swift */; };
+		B605CC631D5B77650060AD72 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B605CC621D5B77650060AD72 /* AVFoundation.framework */; };
+		B605CC651D5C781D0060AD72 /* TorchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC641D5C781D0060AD72 /* TorchController.swift */; };
+		B605CC671D5CDCC20060AD72 /* VibrationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC661D5CDCC20060AD72 /* VibrationsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +53,10 @@
 		B605CC4E1D5B3F680060AD72 /* MorseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MorseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B605CC521D5B3F680060AD72 /* MorseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorseUITests.swift; sourceTree = "<group>"; };
 		B605CC541D5B3F680060AD72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B605CC601D5B46760060AD72 /* MorseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MorseRepresentation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		B605CC621D5B77650060AD72 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		B605CC641D5C781D0060AD72 /* TorchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TorchController.swift; sourceTree = "<group>"; };
+		B605CC661D5CDCC20060AD72 /* VibrationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VibrationsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B605CC631D5B77650060AD72 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +88,7 @@
 		B605CC231D5B3F670060AD72 = {
 			isa = PBXGroup;
 			children = (
+				B605CC621D5B77650060AD72 /* AVFoundation.framework */,
 				B605CC2E1D5B3F670060AD72 /* Morse */,
 				B605CC461D5B3F680060AD72 /* MorseTests */,
 				B605CC511D5B3F680060AD72 /* MorseUITests */,
@@ -101,6 +111,9 @@
 			children = (
 				B605CC2F1D5B3F670060AD72 /* AppDelegate.swift */,
 				B605CC311D5B3F670060AD72 /* ViewController.swift */,
+				B605CC601D5B46760060AD72 /* MorseRepresentation.swift */,
+				B605CC661D5CDCC20060AD72 /* VibrationsController.swift */,
+				B605CC641D5C781D0060AD72 /* TorchController.swift */,
 				B605CC331D5B3F670060AD72 /* Main.storyboard */,
 				B605CC391D5B3F680060AD72 /* Assets.xcassets */,
 				B605CC3B1D5B3F680060AD72 /* LaunchScreen.storyboard */,
@@ -196,6 +209,7 @@
 				TargetAttributes = {
 					B605CC2B1D5B3F670060AD72 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = SM43G3Z2Z7;
 					};
 					B605CC421D5B3F680060AD72 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -259,7 +273,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B605CC671D5CDCC20060AD72 /* VibrationsController.swift in Sources */,
 				B605CC321D5B3F670060AD72 /* ViewController.swift in Sources */,
+				B605CC651D5C781D0060AD72 /* TorchController.swift in Sources */,
+				B605CC611D5B46760060AD72 /* MorseRepresentation.swift in Sources */,
 				B605CC381D5B3F680060AD72 /* Morse.xcdatamodeld in Sources */,
 				B605CC301D5B3F670060AD72 /* AppDelegate.swift in Sources */,
 			);
@@ -403,10 +420,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Morse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.Morse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -414,10 +434,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Morse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.Morse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
