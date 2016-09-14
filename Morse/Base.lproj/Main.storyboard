@@ -3,8 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,52 +19,80 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter the text to transmit" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SsZ-sW-WqH">
-                                <rect key="frame" x="16" y="45" width="343" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5v-cc-z0k">
-                                <rect key="frame" x="113" y="185" width="150" height="30"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1o7-el-2ps">
+                                <rect key="frame" x="16" y="30" width="343" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="vDY-S1-WdS"/>
+                                    <constraint firstAttribute="height" constant="100" id="f7V-bv-3Jb"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardType="alphabet" returnKeyType="done"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEX-4q-PXZ">
+                                <rect key="frame" x="16" y="180" width="343" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="4xo-RF-6RT"/>
+                                </constraints>
+                                <attributedString key="attributedText"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" keyboardAppearance="light"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5v-cc-z0k">
+                                <rect key="frame" x="28" y="300" width="150" height="29"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" priority="750" constant="150" id="vDY-S1-WdS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Transmit with torch"/>
                                 <connections>
                                     <action selector="transmitWithTorch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q3g-jq-KLw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ep1-k1-gsR">
-                                <rect key="frame" x="112" y="253" width="150" height="30"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTs-Yj-ajd">
+                                <rect key="frame" x="198" y="300" width="150" height="29"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="T5f-ea-axN"/>
+                                    <constraint firstAttribute="width" priority="750" constant="150" id="4Jk-AM-fyr"/>
                                 </constraints>
-                                <state key="normal" title="Vibrate">
-                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Transmit with sound"/>
                                 <connections>
-                                    <action selector="transmitWithVibrations:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ul2-8A-4AW"/>
+                                    <action selector="transmitWithSound:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RvZ-7v-49N"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ym4-KX-dJF">
+                                <rect key="frame" x="16" y="155" width="343" height="2"/>
+                                <color key="progressTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="trackTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </progressView>
                         </subviews>
-                        <color key="backgroundColor" red="0.4110301314317672" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.4110301314" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="ep1-k1-gsR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.8" constant="1" id="3CK-fh-Omm"/>
-                            <constraint firstItem="A5v-cc-z0k" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="56F-PY-m3T"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="SsZ-sW-WqH" secondAttribute="trailing" id="97M-sV-48m"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="SsZ-sW-WqH" secondAttribute="leading" id="GyY-5u-X6C"/>
-                            <constraint firstItem="ep1-k1-gsR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QCa-Mv-Aer"/>
-                            <constraint firstItem="SsZ-sW-WqH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="25" id="ZJL-KW-Xcn"/>
-                            <constraint firstItem="A5v-cc-z0k" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.6" id="x7K-nG-oS9"/>
+                            <constraint firstItem="CTs-Yj-ajd" firstAttribute="top" secondItem="A5v-cc-z0k" secondAttribute="top" id="09m-vU-uPk"/>
+                            <constraint firstItem="A5v-cc-z0k" firstAttribute="top" secondItem="yEX-4q-PXZ" secondAttribute="bottom" constant="20" id="40q-sm-OAC"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="1o7-el-2ps" secondAttribute="leading" id="8pc-fW-6wY"/>
+                            <constraint firstItem="yEX-4q-PXZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="AYt-dd-leg"/>
+                            <constraint firstItem="1o7-el-2ps" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="Ion-gQ-MOE"/>
+                            <constraint firstItem="yEX-4q-PXZ" firstAttribute="leading" relation="lessThanOrEqual" secondItem="A5v-cc-z0k" secondAttribute="leading" id="PAQ-Wd-3mo"/>
+                            <constraint firstItem="A5v-cc-z0k" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" constant="-10" id="QUP-ID-rZU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yEX-4q-PXZ" secondAttribute="trailing" id="QsJ-ex-bKH"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="Ym4-KX-dJF" secondAttribute="leading" id="ckR-mz-rU1"/>
+                            <constraint firstItem="yEX-4q-PXZ" firstAttribute="top" secondItem="1o7-el-2ps" secondAttribute="bottom" constant="50" id="eTg-vM-tgc"/>
+                            <constraint firstItem="CTs-Yj-ajd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="centerXWithinMargins" constant="10" id="g9G-1S-Lpj"/>
+                            <constraint firstItem="Ym4-KX-dJF" firstAttribute="top" secondItem="1o7-el-2ps" secondAttribute="bottom" constant="25" id="hqb-SL-eLu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ym4-KX-dJF" secondAttribute="trailing" id="rXb-DT-MPx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1o7-el-2ps" secondAttribute="trailing" id="txQ-x0-FFH"/>
+                            <constraint firstItem="CTs-Yj-ajd" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="yEX-4q-PXZ" secondAttribute="trailing" id="wMg-T8-d1m"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="bTransmitWithSound" destination="CTs-Yj-ajd" id="e3G-sa-wBv"/>
                         <outlet property="bTransmitWithTorch" destination="A5v-cc-z0k" id="HaV-QE-5Ix"/>
-                        <outlet property="bTransmitWithVibration" destination="ep1-k1-gsR" id="94g-G8-duZ"/>
-                        <outlet property="textField" destination="SsZ-sW-WqH" id="qwK-59-44B"/>
+                        <outlet property="inputTextView" destination="1o7-el-2ps" id="uFi-1Y-Ehb"/>
+                        <outlet property="morseStringRepresentationTextView" destination="yEX-4q-PXZ" id="Msh-U3-mHI"/>
+                        <outlet property="progressView" destination="Ym4-KX-dJF" id="8qi-9D-l3V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -8,194 +8,23 @@
 
 import UIKit
 
-enum Signal {
-    case Dot
-    case Dash
-    case Gap(GapType)
-    
-    var duration: Float {
-        switch self {
-        case .Dot: return 1.0
-        case .Dash: return 3.0
-        case .Gap(let type):
-            return type.rawValue
-        }
-    }
-    
-    var value: Any {
-        switch self {
-        case .Dot:
-            switch currentSignalType {
-            case .StringSignal:
-                return "."
-            case .TorchSignal:
-                return 1
-            }
-        case .Dash:
-            switch currentSignalType {
-            case .StringSignal:
-                return "-"
-            case .TorchSignal:
-                return 1
-            }
-        case .Gap:
-            switch currentSignalType {
-            case .StringSignal:
-                return "_"
-            case .TorchSignal:
-                return 0
-            }
-        }
-    }
-}
-
-
-enum PredefinedSignalType {
-    case StringSignal
-    case TorchSignal
-}
-
-var currentSignalType: PredefinedSignalType = .TorchSignal
-
-enum GapType: Float {
-    case BetweenMarks = 1.0
-    case BetweenLetters = 3.0
-    case BetweenWords = 7.0
-}
-
-
-//enum ITUProsign: String {
-//    case InvationToTransmit = "-.-"
-//    case Wait = ".-..."
-//    case StartingSignal = "-.-.-"
-//    case EndOfWork = "...-.-"
-//    case Understood = "...-."
-//    case Error = "........"
-//}
-
-enum ITUProsign {
-    case InvitationToTransmit
-    case Wait
-    case StartingSignal
-    case EndOfWork
-    case Understood
-    case Error
-    
-    var value: Any {
-        switch self {
-        case .InvitationToTransmit:
-            return addGapsBetweenMarksTo([Signal.Dash, Signal.Dot, Signal.Dash])
-        case .Wait:
-            return addGapsBetweenMarksTo([Signal.Dot, Signal.Dash, Signal.Dot, Signal.Dot, Signal.Dot])
-        case .StartingSignal:
-            return addGapsBetweenMarksTo([Signal.Dash, Signal.Dot, Signal.Dash, Signal.Dot, Signal.Dash])
-        case .EndOfWork:
-            return addGapsBetweenMarksTo([Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dash, Signal.Dot, Signal.Dash])
-        case .Understood:
-            return addGapsBetweenMarksTo([Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dash, Signal.Dot])
-        case .Error:
-            return addGapsBetweenMarksTo([Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dot, Signal.Dot])
-        }
-    }
-}
-
-func addGapsBetweenMarksTo(seq: [Signal]) -> [Signal] {
-    var output = seq
-    var c = 1
-    for _ in (seq.startIndex..<seq.endIndex.predecessor()) {
-        output.insert(Signal.Gap(.BetweenMarks), atIndex: c)
-        c = c + 2
-    }
-    return output
-}
-
-var genericDict = [Character:[Signal]]()
-
-var ITUGenericDictionary: [Character:[Signal]]! {
-    get {
-        if !genericDict.isEmpty {
-            return genericDict
-        } else {
-            var dict = [Character:[Signal]]()
-            for (char,code) in ITUStringDictionary {
-                let mappedCode: [Signal] = code.characters.map { mark in
-                    switch mark {
-                    case ".": return Signal.Dot
-                    case "-": return Signal.Dash
-                    default: return Signal.Gap(.BetweenMarks)
-                    }
-                }
-                let mappedCodeWithGaps = addGapsBetweenMarksTo(mappedCode)
-                dict.updateValue(mappedCodeWithGaps, forKey: char)
-            }
-            print("GenericDict: \(dict)")
-            genericDict = dict
-            return genericDict
-        }
-    }
-}
-
-let ITUStringDictionary: [Character:String] = [
-    "A":".-",
-    "B":"-...",
-    "C":"-.-.",
-    "D":"-..",
-    "E":".",
-    "F":"..-.",
-    "G":"--.",
-    "H":"....",
-    "I":"..",
-    "J":".---",
-    "K":"-.-",
-    "L":".-..",
-    "M":"--",
-    "N":"-.",
-    "O":"---",
-    "P":".--.",
-    "Q":"--.-",
-    "R":".-.",
-    "S":"...",
-    "T":"-",
-    "U":"..-",
-    "V":"...-",
-    "W":".--",
-    "X":"-..-",
-    "Y":"-.--",
-    "Z":"--..",
-    "0":"-----",
-    "1":".----",
-    "2":"..---",
-    "3":"...--",
-    "4":"....-",
-    "5":".....",
-    "6":"-....",
-    "7":"--...",
-    "8":"---..",
-    "9":"----.",
-    ".":".-.-.-",
-    ",":"--..--",
-    ":":"---...",
-    "?":"..--..",
-    "'":".----.",
-    "-":"-....-",
-    "/":"-..-.",
-    "(":"-.--.",
-    ")":"-.--.-",
-    "=":"-...-",
-    "+":".-.-.",
-    "@":".--.-."
-]
-
 class MorseRepresentation: NSObject {
     
-    private var messageForTransmitting: [Signal]!
-    private var stringRepresentation: String!
+    var originText: String!
+    var genericMessage: [Signal]!
+    var stringRepresentation: String!
+    let dotCharacter = "∙"
+    let dashCharacter = "⎯"
+    
+    var fromGenericToOriginTextCorrTable: [Int:Int] = [:]
+    var fromGenericToStringCorrTable: [Int:Int] = [:]
+    var letterRangesInMorseString: [NSRange]!
     
 // MARK: Initialization
     init(string: String) {
         super.init()
-        generateStringMessage(fromString: string)
-        generateGenericMessage(fromString: string)
+        self.originText = string
+        generateStringMessage(fromString: originText)
     }
     
     deinit {
@@ -215,7 +44,7 @@ class MorseRepresentation: NSObject {
                     message.append(Signal.Gap(.BetweenWords))
                 } else {
                     print("Invalid character: \(char)")
-                    message.append(ITUProsign.Error)
+                    message.append(ITUProsign.Error.genericSignal)
                 }
             }
             if characterIndex == string.characters.indices.last! {
@@ -237,11 +66,96 @@ class MorseRepresentation: NSObject {
                 bufArray.append(nonArrayElement)
             }
             return bufArray
-        })
+            })
         
-        self.messageForTransmitting = flattenedMessage
+        
+        self.genericMessage = flattenedMessage
         print("GenericMessage: \(flattenedMessage)")
+        
+        fromGenericToStringCorrTable = [:]
+        fromGenericToOriginTextCorrTable = [:]
+        letterRangesInMorseString = nil
+        generateFromGenericToStringCorrTable()
+        generateLetterRangesInMorseString()
+        generateFromGenericToOriginTextCorrTable()
+
     }
+    
+    func generateFromGenericToStringCorrTable() {
+        print("generateFromGenericToStringCorrTable()")
+        var key = 0
+        var value = 0
+        for signal in genericMessage {
+            switch signal {
+            case .Dot, .Dash:
+                fromGenericToStringCorrTable.updateValue(value, forKey: key)
+                key += 1
+                value += 1
+            case .Gap(_):
+                let array = [String](count: Int(round(signal.duration)), repeatedValue: " ")
+                for _ in array {
+                    fromGenericToStringCorrTable.updateValue(value, forKey: key)
+                    value += 1
+                }
+                key += 1
+            }
+        }
+        print(fromGenericToStringCorrTable.sort { $0.0 < $1.0 } )
+    }
+    
+    func generateFromGenericToOriginTextCorrTable() {
+        print("generateFromGenericToOriginTextCorrTable()")
+        var key = 0
+        var value = 0
+        for signal in genericMessage {
+            fromGenericToOriginTextCorrTable.updateValue(value, forKey: key)
+            switch signal {
+            case .Gap(let type):
+                switch type {
+                case .BetweenLetters:
+                    key += 1
+                    value += 1
+                case .BetweenWords:
+                    key += 1
+                    value += 2
+                default:
+                    key += 1
+                }
+            default:
+                key += 1
+            }
+        }
+        fromGenericToOriginTextCorrTable.updateValue(value + 1, forKey: key - 1)
+        print(fromGenericToOriginTextCorrTable.sort { $0.0 < $1.0 } )
+    }
+    
+    func generateLetterRangesInMorseString() {
+        let stringIndexes = fromGenericToStringCorrTable.values.sort { $0 < $1 }
+        var ranges: [NSRange] = []
+        var loc = 0
+        var length = 0
+        var prev = 0
+        for stringIndex in stringIndexes {
+            if (stringIndex - prev) == Int(Signal.Gap(.BetweenLetters).duration) || (stringIndex - prev) == Int(Signal.Gap(.BetweenWords).duration) || stringIndex == stringIndexes.maxElement() {
+                var range: NSRange!
+                if loc == 0 {
+                    range = NSMakeRange(loc, length)
+                } else {
+                    range = NSMakeRange(loc+1, length)
+                }
+                ranges.append(range)
+                loc = stringIndex
+                length = 0
+            } else {
+                length += 1
+            }
+            prev = stringIndex
+        }
+        print("ranges: \(ranges)")
+        letterRangesInMorseString = ranges
+        
+    }
+    
     
     func generateStringMessage(fromString string:String) {
         var message = ""
@@ -252,7 +166,7 @@ class MorseRepresentation: NSObject {
                 for markIndex in morseRep.characters.indices {
                     let mark = morseRep[markIndex]
                     if (morseRep.startIndex..<morseRep.endIndex.predecessor()).contains(markIndex) {
-                        morseRepWithMarkGaps.appendContentsOf(String(mark) + "_")
+                        morseRepWithMarkGaps.appendContentsOf(String(mark) + " ")
                     } else {
                         morseRepWithMarkGaps.append(mark)
                     }
@@ -260,32 +174,43 @@ class MorseRepresentation: NSObject {
                 message.appendContentsOf(morseRepWithMarkGaps)
             } else {
                 if char == " " {
-                    message.appendContentsOf("_______")
+                    message.appendContentsOf("       ")
                 } else {
                     print("Invalid character: \(char)")
                     message.appendContentsOf("?")
                 }
             }
             if characterIndex == string.characters.indices.last! {
-                message.appendContentsOf("_")
+                message.appendContentsOf(" ")
             } else if string[characterIndex.successor()] != " " && char != " " {
-                message.appendContentsOf("___")
+                message.appendContentsOf("   ")
             }
         }
+        
+        message = message.stringByReplacingOccurrencesOfString(".", withString: dotCharacter)
+        message = message.stringByReplacingOccurrencesOfString("-", withString: dashCharacter)
+    
         print("text: \(string)\nmessage: \(message)")
         self.stringRepresentation = message
     }
 
-    
-    func transmitWithTorch() {
-        let torchCtrl = TorchController(dotLengthInSeconds: 0.1)
-        if torchCtrl.torchIsAvailable {
-            torchCtrl.transmitMessage(messageForTransmitting)
+    func transmit(with signalType: SignalType, progressCallback: (Float, Int, Int) -> Void) {
+        switch signalType {
+        case .TorchSignal:
+            let torchCtrl = TorchController(dotLengthInSeconds: 0.1)
+            if torchCtrl.torchIsAvailable {
+                torchCtrl.transmitMessage(genericMessage, torchProgressCallback: { progress, currentIndexInGeneric in
+                    progressCallback(progress, self.fromGenericToStringCorrTable[currentIndexInGeneric]!, self.fromGenericToOriginTextCorrTable[currentIndexInGeneric]!)
+                })
+            }
+        case .AudioSignal:
+            let audioCtrl = AudioController(dotLengthInSeconds: 0.125)
+            audioCtrl.transmitMessage(genericMessage, audioProgressCallback: { progress, currentIndexInGeneric in
+                progressCallback(progress, self.fromGenericToStringCorrTable[currentIndexInGeneric]!, self.fromGenericToOriginTextCorrTable[currentIndexInGeneric]!)
+            })
+        default:
+            break
         }
     }
     
-    func transmitWithVibrations() {
-        let vibrCtrl = VibrationsController(dotLengthInSeconds: 0.1)
-        vibrCtrl.transmitMessage(stringRepresentation)
-    }
 }

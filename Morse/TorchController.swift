@@ -21,9 +21,11 @@ class TorchController: NSObject {
         }
     }
     private var _dotLengthInSeconds: NSTimeInterval!
-    private var _message: [Int]!
-    private var _currentMarkIndex = 0
+    private var _message: [Signal.TorchSignal]!
+    private var _currentSignalIndex = 0
     private var _timer: NSTimer!
+    var torchProgressCallback: ((Float, Int) -> Void)!
+    var fromTorchSignalToGenericCorrTable: [Int:Int] = [:]
     
     init(dotLengthInSeconds: NSTimeInterval) {
         _dotLengthInSeconds = dotLengthInSeconds
@@ -34,54 +36,67 @@ class TorchController: NSObject {
         print("TorchController has been deinitialized")
     }
     
-    func transmitMessage(message: [Signal]) {
+    func transmitMessage(message: [Signal], torchProgressCallback: (Float, Int) -> Void ) {
         print("transmitMessage is called")
         _message = transformMessage(message)
         print("_message: \(_message)")
+        self.torchProgressCallback = torchProgressCallback
+        self.torchProgressCallback(0.0, 0)
         
         dispatch_async(dispatch_get_main_queue()){
             self._timer = NSTimer.scheduledTimerWithTimeInterval(self._dotLengthInSeconds,
                                                                  target: self,
-                                                                 selector: #selector(self.manageTorch),
-                                                                 userInfo: nil,
+                                                                 selector: #selector(TorchController.manageTorch(_:)),
+                                                                 userInfo: self,
                                                                  repeats: true)
         }
     }
     
-    func transformMessage(message:[Signal]) -> [Int] {
-        var output = [Int]()
+    func transformMessage(message:[Signal]) -> [Signal.TorchSignal] {
+        var output: [Signal.TorchSignal] = []
         currentSignalType = .TorchSignal
+        
+        var key = 0
+        var value = 0
         for signal in message {
-            let signalArray = [Int](count: Int(round(signal.duration)), repeatedValue: signal.value as! Int)
+            let signalArray = Array<Signal.TorchSignal>(count: Int(round(signal.duration)), repeatedValue: signal.value as! Signal.TorchSignal)
             output.appendContentsOf(signalArray)
+            
+            for _ in signalArray {
+                fromTorchSignalToGenericCorrTable.updateValue(value, forKey: key)
+                key += 1
+            }
+            value += 1
         }
-        let flattenedOutput = output.flatMap{$0}
-        return flattenedOutput
+        print(fromTorchSignalToGenericCorrTable.sort { $0.0 < $1.0 })
+        return output
     }
     
-    func manageTorch() {
-        print("manageTorch is called")
-        if _message[_currentMarkIndex] == 1 && device.torchMode == .Off {
-//            print("manageTorch: 1st condition")
+    func manageTorch(timer: NSTimer) {
+        if _message[_currentSignalIndex] == Signal.TorchSignal.TorchOn && device.torchMode == .Off {
             if let _ = try? device.lockForConfiguration() {
                 device.torchMode = .On
                 device.unlockForConfiguration()
             }
-        } else if _message[_currentMarkIndex] == 0 && device.torchMode == .On {
-//            print("manageTorch: 2nd condition")
+        } else if _message[_currentSignalIndex] == Signal.TorchSignal.TorchOff && device.torchMode == .On {
             if let _ = try? device.lockForConfiguration() {
                 device.torchMode = .Off
                 device.unlockForConfiguration()
             }
         }
-        if _currentMarkIndex == _message.indices.last! {
-//            print("manageTorch: 3rd condition")
+        
+        let currentProgress = Float(_currentSignalIndex)/Float(_message.count)
+        print("currentProgress: \(currentProgress)")
+        print("currentSignalIndex:\(_currentSignalIndex)")
+        let userInfo = timer.userInfo as! TorchController
+        userInfo.torchProgressCallback(currentProgress, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
+        if _currentSignalIndex == _message.indices.last! {
             _timer.invalidate()
+            userInfo.torchProgressCallback(1.0, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
         } else {
-//            print("manageTorch: 4th condition")
-            _currentMarkIndex = _currentMarkIndex.successor()
-//            print(String(format:"%.2f", NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970 % floor(NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970)))
+            _currentSignalIndex = _currentSignalIndex.successor()
         }
+        print("newCurrentSignalIndex:\(_currentSignalIndex)")
     }
     
 }

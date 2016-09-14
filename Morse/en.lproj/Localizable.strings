@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  Morse
+
+  Created by Владимир Молчанов on 13/09/16.
+  Copyright © 2016 Владимир Молчанов. All rights reserved.
+*/
+
+inputview_descriptionLabel_text = "Enter the text to transmit";
+morseStringRepresentationView_descriptionLabel_text = "Morse code will appear here";

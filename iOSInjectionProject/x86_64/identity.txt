@@ -1,0 +1,2 @@
+/Users/molchanov/Library/Developer/Xcode/DerivedData/Morse-cswarbgmwazzzubrvtqkdpgjvkcf/Build/Products/Debug-iphonesimulator/Morse.app
+
