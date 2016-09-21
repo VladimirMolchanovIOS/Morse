@@ -1,0 +1,10 @@
+digraph G {
+	node [shape=box];
+	"BundleContents" -> "/tmp/injectionforxcode/BundleInjection";
+	
+	"InjectionBundle-Prefix" [color=red];
+	
+	edge [color=blue, dir=both];
+	"/tmp/injectionforxcode/BundleInjection" [color=gray, style=dashed, fontcolor=gray]
+}
+

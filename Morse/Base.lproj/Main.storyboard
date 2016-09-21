@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -91,6 +91,7 @@
                         <outlet property="bTransmitWithSound" destination="CTs-Yj-ajd" id="e3G-sa-wBv"/>
                         <outlet property="bTransmitWithTorch" destination="A5v-cc-z0k" id="HaV-QE-5Ix"/>
                         <outlet property="inputTextView" destination="1o7-el-2ps" id="uFi-1Y-Ehb"/>
+                        <outlet property="inputViewHeightConstraint" destination="f7V-bv-3Jb" id="zRt-ZQ-uvy"/>
                         <outlet property="morseStringRepresentationTextView" destination="yEX-4q-PXZ" id="Msh-U3-mHI"/>
                         <outlet property="progressView" destination="Ym4-KX-dJF" id="8qi-9D-l3V"/>
                     </connections>

@@ -106,17 +106,15 @@ enum ITUProsign: String {
     case Newline = ".-.-"
     
     var genericSignal: [Signal] {
-        get {
-            var signal: [Signal] = self.rawValue.characters.map { mark in
-                switch mark {
-                case ".": return Signal.Dot
-                case "-": return Signal.Dash
-                default: return Signal.Gap(.BetweenMarks)
-                }
+        var signal: [Signal] = self.rawValue.characters.map { mark in
+            switch mark {
+            case ".": return Signal.Dot
+            case "-": return Signal.Dash
+            default: return Signal.Gap(.BetweenMarks)
             }
-            signal.addNewElementBetweenElements(newElement: .Gap(.BetweenMarks))
-            return signal
         }
+        signal.addNewElementBetweenElements(newElement: .Gap(.BetweenMarks))
+        return signal
     }
 }
 

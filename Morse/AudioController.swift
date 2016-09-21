@@ -38,6 +38,7 @@ class AudioController: NSObject {
         self.audioProgressCallback = audioProgressCallback
         self.audioProgressCallback(0.0, 0)
         
+        NSNotificationCenter.defaultCenter().postNotificationName(transmissionWillBeginNotificationKey, object: self, userInfo: nil)
         dispatch_async(dispatch_get_main_queue()){
             self._timer = NSTimer.scheduledTimerWithTimeInterval(self._dotLengthInSeconds,
                                                                  target: self,
@@ -70,7 +71,7 @@ class AudioController: NSObject {
         
     }
     
-    func transformMessage(message:[Signal]) -> [Signal.AudioSignal] {
+    func transformMessage(message: [Signal]) -> [Signal.AudioSignal] {
         var output: [Signal.AudioSignal] = []
         currentSignalType = .AudioSignal
         
@@ -114,6 +115,7 @@ class AudioController: NSObject {
         userInfo.audioProgressCallback(currentProgress, fromAudioSignalToGenericCorrTable[_currentSignalIndex]!)
         if _currentSignalIndex == _message.indices.last! {
             _timer.invalidate()
+            NSNotificationCenter.defaultCenter().postNotificationName(transmissionDidFinishNotificationKey, object: self, userInfo: nil)
             userInfo.audioProgressCallback(1.0, fromAudioSignalToGenericCorrTable[_currentSignalIndex]!)
         } else {
             _currentSignalIndex += 1

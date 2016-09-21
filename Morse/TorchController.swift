@@ -12,12 +12,10 @@ import AVFoundation
 class TorchController: NSObject {
     let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
     var torchIsAvailable: Bool {
-        get {
-            if device.hasTorch && device.torchAvailable && device.isTorchModeSupported(.On) && device.isTorchModeSupported(.Off) {
-                return true
-            } else {
-                return false
-            }
+        if device.hasTorch && device.torchAvailable && device.isTorchModeSupported(.On) && device.isTorchModeSupported(.Off) {
+            return true
+        } else {
+            return false
         }
     }
     private var _dotLengthInSeconds: NSTimeInterval!
@@ -43,6 +41,7 @@ class TorchController: NSObject {
         self.torchProgressCallback = torchProgressCallback
         self.torchProgressCallback(0.0, 0)
         
+        NSNotificationCenter.defaultCenter().postNotificationName(transmissionWillBeginNotificationKey, object: self, userInfo: nil)
         dispatch_async(dispatch_get_main_queue()){
             self._timer = NSTimer.scheduledTimerWithTimeInterval(self._dotLengthInSeconds,
                                                                  target: self,
@@ -52,7 +51,7 @@ class TorchController: NSObject {
         }
     }
     
-    func transformMessage(message:[Signal]) -> [Signal.TorchSignal] {
+    func transformMessage(message: [Signal]) -> [Signal.TorchSignal] {
         var output: [Signal.TorchSignal] = []
         currentSignalType = .TorchSignal
         
@@ -92,6 +91,7 @@ class TorchController: NSObject {
         userInfo.torchProgressCallback(currentProgress, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
         if _currentSignalIndex == _message.indices.last! {
             _timer.invalidate()
+            NSNotificationCenter.defaultCenter().postNotificationName(transmissionDidFinishNotificationKey, object: self, userInfo: nil)
             userInfo.torchProgressCallback(1.0, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
         } else {
             _currentSignalIndex = _currentSignalIndex.successor()

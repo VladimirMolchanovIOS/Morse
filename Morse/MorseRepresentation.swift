@@ -157,7 +157,7 @@ class MorseRepresentation: NSObject {
     }
     
     
-    func generateStringMessage(fromString string:String) {
+    func generateStringMessage(fromString string: String) {
         var message = ""
         for characterIndex in string.characters.indices {
             let char = string.uppercaseString.characters[characterIndex]
