@@ -10,18 +10,20 @@ import Foundation
 import AVFoundation
 
 class AudioController: NSObject {
-    private var shortBeepAudioPlayer: AVAudioPlayer!
-    private var longBeepAudioPlayer: AVAudioPlayer!
-    private var _dotLengthInSeconds: NSTimeInterval
-    private var _message: [Signal.AudioSignal]!
-    private var _currentSignalIndex = 0
-    private var _timer: NSTimer!
+    fileprivate var shortBeepAudioPlayer: AVAudioPlayer!
+    fileprivate var longBeepAudioPlayer: AVAudioPlayer!
+    fileprivate var _dotLengthInSeconds: TimeInterval
+    fileprivate var _message: [Signal.AudioSignal]!
+    fileprivate var _currentSignalIndex = 0
+    fileprivate var _timer: Timer!
     var shortBeepSoundName = "censor-beep-01.mp3"
     var longBeepSoundName = "censor-beep-3.mp3"
     var audioProgressCallback: ((Float, Int) -> Void)!
     var fromAudioSignalToGenericCorrTable: [Int:Int] = [:]
     
-    init(dotLengthInSeconds: NSTimeInterval) {
+    var time: Date!
+    
+    init(dotLengthInSeconds: TimeInterval) {
         _dotLengthInSeconds = dotLengthInSeconds
         super.init()
         createPlayers()
@@ -31,16 +33,14 @@ class AudioController: NSObject {
         print("AudioController has been deinitialized")
     }
     
-    func transmitMessage(message: [Signal], audioProgressCallback: (Float, Int) -> Void) {
-        print("transmitMessage is called")
+    func transmitMessage(_ message: [Signal], audioProgressCallback: @escaping (Float, Int) -> Void) {
         _message = transformMessage(message)
-        print("_message: \(_message)")
         self.audioProgressCallback = audioProgressCallback
         self.audioProgressCallback(0.0, 0)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(transmissionWillBeginNotificationKey, object: self, userInfo: nil)
-        dispatch_async(dispatch_get_main_queue()){
-            self._timer = NSTimer.scheduledTimerWithTimeInterval(self._dotLengthInSeconds,
+        NotificationCenter.default.post(name: Notification.Name(rawValue: transmissionWillBeginNotificationKey), object: self, userInfo: nil)
+        DispatchQueue.main.async{
+            self._timer = Timer.scheduledTimer(timeInterval: self._dotLengthInSeconds,
                                                                  target: self,
                                                                  selector: #selector(AudioController.manageAudio(_:)),
                                                                  userInfo: self,
@@ -49,37 +49,34 @@ class AudioController: NSObject {
     }
     
     func createPlayers() {
-        let shortSoundName: String = shortBeepSoundName.componentsSeparatedByString(".").first!
-        let shortSoundType: String = shortBeepSoundName.componentsSeparatedByString(".").last!
+        let shortSoundName: String = shortBeepSoundName.components(separatedBy: ".").first!
+        let shortSoundType: String = shortBeepSoundName.components(separatedBy: ".").last!
         
-        guard let shortSoundPath = NSBundle.mainBundle().pathForResource(shortSoundName, ofType: shortSoundType) else { return }
-        let shortSoundURL = NSURL(fileURLWithPath: shortSoundPath)
-        shortBeepAudioPlayer = try! AVAudioPlayer(contentsOfURL: shortSoundURL)
+        guard let shortSoundPath = Bundle.main.path(forResource: shortSoundName, ofType: shortSoundType) else { return }
+        let shortSoundURL = URL(fileURLWithPath: shortSoundPath)
+        shortBeepAudioPlayer = try! AVAudioPlayer(contentsOf: shortSoundURL)
         shortBeepAudioPlayer.enableRate = true
         shortBeepAudioPlayer.rate = Float(shortBeepAudioPlayer.duration/_dotLengthInSeconds)
         
-        let longSoundName: String = longBeepSoundName.componentsSeparatedByString(".").first!
-        let longSoundType: String = longBeepSoundName.componentsSeparatedByString(".").last!
+        let longSoundName: String = longBeepSoundName.components(separatedBy: ".").first!
+        let longSoundType: String = longBeepSoundName.components(separatedBy: ".").last!
         
-        guard let longSoundPath = NSBundle.mainBundle().pathForResource(longSoundName, ofType: longSoundType) else { return }
-        let longSoundURL = NSURL(fileURLWithPath: longSoundPath)
-        longBeepAudioPlayer = try! AVAudioPlayer(contentsOfURL: longSoundURL)
+        guard let longSoundPath = Bundle.main.path(forResource: longSoundName, ofType: longSoundType) else { return }
+        let longSoundURL = URL(fileURLWithPath: longSoundPath)
+        longBeepAudioPlayer = try! AVAudioPlayer(contentsOf: longSoundURL)
         longBeepAudioPlayer.enableRate = true
-        longBeepAudioPlayer.rate = Float(longBeepAudioPlayer.duration/(_dotLengthInSeconds*Double(Signal.Dash.duration)))
-        
-        print("short duration and rate: \((shortBeepAudioPlayer.duration, shortBeepAudioPlayer.rate))\nlong duration and rate: \((longBeepAudioPlayer.duration, longBeepAudioPlayer.rate))")
-        
+        longBeepAudioPlayer.rate = Float(longBeepAudioPlayer.duration/(_dotLengthInSeconds*Double(Signal.dash.duration)))
     }
     
-    func transformMessage(message: [Signal]) -> [Signal.AudioSignal] {
+    func transformMessage(_ message: [Signal]) -> [Signal.AudioSignal] {
         var output: [Signal.AudioSignal] = []
-        currentSignalType = .AudioSignal
+        currentSignalType = .audioSignal
         
         var key = 0
         var value = 0
         for signal in message {
-            let signalArray = Array<Signal.AudioSignal>(count: Int(round(signal.duration)), repeatedValue: signal.value as! Signal.AudioSignal)
-            output.appendContentsOf(signalArray)
+            let signalArray = Array<Signal.AudioSignal>(repeating: signal.value as! Signal.AudioSignal, count: Int(round(signal.duration)))
+            output.append(contentsOf: signalArray)
             
             for _ in signalArray {
                 fromAudioSignalToGenericCorrTable.updateValue(value, forKey: key)
@@ -87,41 +84,38 @@ class AudioController: NSObject {
             }
             value += 1
         }
-        print(fromAudioSignalToGenericCorrTable.sort({ $0.0 < $1.0 }))
-//        output.append(Signal.Gap(.BetweenMarks).value as! AudioSignal)
 
         return output
     }
     
     
-    func manageAudio(timer: NSTimer) {
-        if !shortBeepAudioPlayer.playing && !longBeepAudioPlayer.playing {
-            print("---------------------------------------------------------")
-            print(_message[_currentSignalIndex])
+    func manageAudio(_ timer: Timer) {
+        if time != nil {
+            print("real interval:\(DateInterval.init(start: time, end: Date(timeIntervalSinceNow: 0.0)).duration)")
+        }
+        time = Date(timeIntervalSinceNow: 0.0)
+        if !shortBeepAudioPlayer.isPlaying && !longBeepAudioPlayer.isPlaying {
+            
             switch _message[_currentSignalIndex] {
-            case .ShortBeep:
+            case .shortBeep:
                 shortBeepAudioPlayer.play()
-            case .LongBeep:
+            case .longBeep:
                 longBeepAudioPlayer.play()
-            case .Silence:
+            case .silence:
                 break
             }
         }
         
         let currentProgress = Float(_currentSignalIndex)/Float(_message.count)
-        print("currentProgress: \(currentProgress)")
-        print("currentSignalIndex:\(_currentSignalIndex)")
         let userInfo = timer.userInfo as! AudioController
         userInfo.audioProgressCallback(currentProgress, fromAudioSignalToGenericCorrTable[_currentSignalIndex]!)
         if _currentSignalIndex == _message.indices.last! {
             _timer.invalidate()
-            NSNotificationCenter.defaultCenter().postNotificationName(transmissionDidFinishNotificationKey, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: transmissionDidFinishNotificationKey), object: self, userInfo: nil)
             userInfo.audioProgressCallback(1.0, fromAudioSignalToGenericCorrTable[_currentSignalIndex]!)
         } else {
             _currentSignalIndex += 1
-        }
-        print("newCurrentSignalIndex:\(_currentSignalIndex)")
-        
+        }        
     }
     
 

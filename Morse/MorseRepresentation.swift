@@ -36,26 +36,26 @@ class MorseRepresentation: NSObject {
         //        message.appendContentsOf(ITUProsign.StartingSignal)
         //        message.appendContentsOf(Gap.BetweenWords)
         for characterIndex in string.characters.indices {
-            let char = string.uppercaseString.characters[characterIndex]
+            let char = string.uppercased().characters[characterIndex]
             if let morseChar = ITUGenericDictionary[char] {
                 message.append(morseChar)
             } else {
                 if char == " " {
-                    message.append(Signal.Gap(.BetweenWords))
+                    message.append(Signal.gap(.betweenWords))
                 } else {
                     print("Invalid character: \(char)")
                     message.append(ITUProsign.Error.genericSignal)
                 }
             }
             if characterIndex == string.characters.indices.last! {
-                message.append(Signal.Gap(.BetweenMarks))
-            } else if string[characterIndex.successor()] != " " && char != " " {
-                message.append(Signal.Gap(.BetweenLetters))
+                message.append(Signal.gap(.betweenMarks))
+            } else if string[string.index(after: characterIndex)] != " " && char != " " {
+                message.append(Signal.gap(.betweenLetters))
             }
         }
         
         
-        let flattenedMessage = message.reduce([Signal](), combine: { (current, element) -> [Signal] in
+        let flattenedMessage = message.reduce([Signal](), { (current, element) -> [Signal] in
             var bufArray: [Signal] = current
             if let arrayElement = element as? [Signal] {
                 for el in arrayElement {
@@ -70,7 +70,6 @@ class MorseRepresentation: NSObject {
         
         
         self.genericMessage = flattenedMessage
-        print("GenericMessage: \(flattenedMessage)")
         
         fromGenericToStringCorrTable = [:]
         fromGenericToOriginTextCorrTable = [:]
@@ -82,17 +81,16 @@ class MorseRepresentation: NSObject {
     }
     
     func generateFromGenericToStringCorrTable() {
-        print("generateFromGenericToStringCorrTable()")
         var key = 0
         var value = 0
         for signal in genericMessage {
             switch signal {
-            case .Dot, .Dash:
+            case .dot, .dash:
                 fromGenericToStringCorrTable.updateValue(value, forKey: key)
                 key += 1
                 value += 1
-            case .Gap(_):
-                let array = [String](count: Int(round(signal.duration)), repeatedValue: " ")
+            case .gap(_):
+                let array = [String](repeating: " ", count: Int(round(signal.duration)))
                 for _ in array {
                     fromGenericToStringCorrTable.updateValue(value, forKey: key)
                     value += 1
@@ -100,22 +98,20 @@ class MorseRepresentation: NSObject {
                 key += 1
             }
         }
-        print(fromGenericToStringCorrTable.sort { $0.0 < $1.0 } )
     }
     
     func generateFromGenericToOriginTextCorrTable() {
-        print("generateFromGenericToOriginTextCorrTable()")
         var key = 0
         var value = 0
         for signal in genericMessage {
             fromGenericToOriginTextCorrTable.updateValue(value, forKey: key)
             switch signal {
-            case .Gap(let type):
+            case .gap(let type):
                 switch type {
-                case .BetweenLetters:
+                case .betweenLetters:
                     key += 1
                     value += 1
-                case .BetweenWords:
+                case .betweenWords:
                     key += 1
                     value += 2
                 default:
@@ -126,17 +122,16 @@ class MorseRepresentation: NSObject {
             }
         }
         fromGenericToOriginTextCorrTable.updateValue(value + 1, forKey: key - 1)
-        print(fromGenericToOriginTextCorrTable.sort { $0.0 < $1.0 } )
     }
     
     func generateLetterRangesInMorseString() {
-        let stringIndexes = fromGenericToStringCorrTable.values.sort { $0 < $1 }
+        let stringIndexes = fromGenericToStringCorrTable.values.sorted { $0 < $1 }
         var ranges: [NSRange] = []
         var loc = 0
         var length = 0
         var prev = 0
         for stringIndex in stringIndexes {
-            if (stringIndex - prev) == Int(Signal.Gap(.BetweenLetters).duration) || (stringIndex - prev) == Int(Signal.Gap(.BetweenWords).duration) || stringIndex == stringIndexes.maxElement() {
+            if (stringIndex - prev) == Int(Signal.gap(.betweenLetters).duration) || (stringIndex - prev) == Int(Signal.gap(.betweenWords).duration) || stringIndex == stringIndexes.max() {
                 var range: NSRange!
                 if loc == 0 {
                     range = NSMakeRange(loc, length)
@@ -151,59 +146,57 @@ class MorseRepresentation: NSObject {
             }
             prev = stringIndex
         }
-        print("ranges: \(ranges)")
         letterRangesInMorseString = ranges
         
     }
-    
-    
+        
+    // If user pastes text
     func generateStringMessage(fromString string: String) {
         var message = ""
         for characterIndex in string.characters.indices {
-            let char = string.uppercaseString.characters[characterIndex]
+            let char = string.uppercased().characters[characterIndex]
             if let morseRep = ITUStringDictionary[char] {
                 var morseRepWithMarkGaps = ""
                 for markIndex in morseRep.characters.indices {
                     let mark = morseRep[markIndex]
-                    if (morseRep.startIndex..<morseRep.endIndex.predecessor()).contains(markIndex) {
-                        morseRepWithMarkGaps.appendContentsOf(String(mark) + " ")
+                    if (morseRep.startIndex..<morseRep.characters.index(before: morseRep.endIndex)).contains(markIndex) {
+                        morseRepWithMarkGaps.append(String(mark) + " ")
                     } else {
                         morseRepWithMarkGaps.append(mark)
                     }
                 }
-                message.appendContentsOf(morseRepWithMarkGaps)
+                message.append(morseRepWithMarkGaps)
             } else {
                 if char == " " {
-                    message.appendContentsOf("       ")
+                    message.append("       ")
                 } else {
                     print("Invalid character: \(char)")
-                    message.appendContentsOf("?")
+                    message.append("?")
                 }
             }
             if characterIndex == string.characters.indices.last! {
-                message.appendContentsOf(" ")
-            } else if string[characterIndex.successor()] != " " && char != " " {
-                message.appendContentsOf("   ")
+                message.append(" ")
+            } else if string[string.index(after: characterIndex)] != " " && char != " " {
+                message.append("   ")
             }
         }
         
-        message = message.stringByReplacingOccurrencesOfString(".", withString: dotCharacter)
-        message = message.stringByReplacingOccurrencesOfString("-", withString: dashCharacter)
+        message = message.replacingOccurrences(of: ".", with: dotCharacter)
+        message = message.replacingOccurrences(of: "-", with: dashCharacter)
     
-        print("text: \(string)\nmessage: \(message)")
         self.stringRepresentation = message
     }
 
-    func transmit(with signalType: SignalType, progressCallback: (Float, Int, Int) -> Void) {
+    func transmit(with signalType: SignalType, progressCallback: @escaping (Float, Int, Int) -> Void) {
         switch signalType {
-        case .TorchSignal:
+        case .torchSignal:
             let torchCtrl = TorchController(dotLengthInSeconds: 0.1)
             if torchCtrl.torchIsAvailable {
                 torchCtrl.transmitMessage(genericMessage, torchProgressCallback: { progress, currentIndexInGeneric in
                     progressCallback(progress, self.fromGenericToStringCorrTable[currentIndexInGeneric]!, self.fromGenericToOriginTextCorrTable[currentIndexInGeneric]!)
                 })
             }
-        case .AudioSignal:
+        case .audioSignal:
             let audioCtrl = AudioController(dotLengthInSeconds: 0.125)
             audioCtrl.transmitMessage(genericMessage, audioProgressCallback: { progress, currentIndexInGeneric in
                 progressCallback(progress, self.fromGenericToStringCorrTable[currentIndexInGeneric]!, self.fromGenericToOriginTextCorrTable[currentIndexInGeneric]!)

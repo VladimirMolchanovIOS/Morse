@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18A21BA5E1D504CCF3875F14 /* Pods_Morse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8C47C9AA43CA6125318E66 /* Pods_Morse.framework */; };
+		539F801724E54E572FC02AE3 /* Pods_MorseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B89A1A8DBFDA82FD2DBABC8 /* Pods_MorseTests.framework */; };
 		B605CC301D5B3F670060AD72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC2F1D5B3F670060AD72 /* AppDelegate.swift */; };
 		B605CC321D5B3F670060AD72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC311D5B3F670060AD72 /* ViewController.swift */; };
 		B605CC351D5B3F680060AD72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B605CC331D5B3F670060AD72 /* Main.storyboard */; };
@@ -18,7 +20,6 @@
 		B605CC611D5B46760060AD72 /* MorseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC601D5B46760060AD72 /* MorseRepresentation.swift */; };
 		B605CC631D5B77650060AD72 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B605CC621D5B77650060AD72 /* AVFoundation.framework */; };
 		B605CC651D5C781D0060AD72 /* TorchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC641D5C781D0060AD72 /* TorchController.swift */; };
-		B605CC671D5CDCC20060AD72 /* VibrationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605CC661D5CDCC20060AD72 /* VibrationsController.swift */; };
 		B6227BF61D880B5A00AE5C69 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6227BF51D880B5A00AE5C69 /* Extensions.swift */; };
 		B6227BFA1D88141D00AE5C69 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6227BFC1D88141D00AE5C69 /* Localizable.strings */; };
 		B6B166F61D65D575005AE623 /* SignalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B166F51D65D575005AE623 /* SignalHelper.swift */; };
@@ -26,6 +27,7 @@
 		B6BF51851D806DF1009501B6 /* censor-beep-3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6BF51831D806DF1009501B6 /* censor-beep-3.mp3 */; };
 		B6BF51861D806DF1009501B6 /* censor-beep-01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6BF51841D806DF1009501B6 /* censor-beep-01.mp3 */; };
 		B6E918451D8C4219009311D1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E918441D8C4219009311D1 /* Constants.swift */; };
+		E5C5D6692618572424E80112 /* Pods_MorseUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A4BA23EC2653F86DC0B9AF9 /* Pods_MorseUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BF3878D29FA5D7A49D03DB7 /* Pods-Morse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Morse.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Morse/Pods-Morse.debug.xcconfig"; sourceTree = "<group>"; };
+		0D841D32B08BB1B9358297DE /* Pods-MorseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MorseTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MorseTests/Pods-MorseTests.release.xcconfig"; sourceTree = "<group>"; };
+		6A4BA23EC2653F86DC0B9AF9 /* Pods_MorseUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MorseUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B7700E8874BFFB6D4E3C5EF /* Pods-MorseUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MorseUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MorseUITests/Pods-MorseUITests.release.xcconfig"; sourceTree = "<group>"; };
+		7B89A1A8DBFDA82FD2DBABC8 /* Pods_MorseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MorseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB8C47C9AA43CA6125318E66 /* Pods_Morse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Morse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B605CC2C1D5B3F670060AD72 /* Morse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Morse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B605CC2F1D5B3F670060AD72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B605CC311D5B3F670060AD72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,7 +71,6 @@
 		B605CC601D5B46760060AD72 /* MorseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MorseRepresentation.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B605CC621D5B77650060AD72 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B605CC641D5C781D0060AD72 /* TorchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TorchController.swift; sourceTree = "<group>"; };
-		B605CC661D5CDCC20060AD72 /* VibrationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VibrationsController.swift; sourceTree = "<group>"; };
 		B6227BF01D88072E00AE5C69 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		B6227BF11D88072E00AE5C69 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B6227BF51D880B5A00AE5C69 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -74,6 +81,9 @@
 		B6BF51831D806DF1009501B6 /* censor-beep-3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "censor-beep-3.mp3"; sourceTree = "<group>"; };
 		B6BF51841D806DF1009501B6 /* censor-beep-01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "censor-beep-01.mp3"; sourceTree = "<group>"; };
 		B6E918441D8C4219009311D1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C6F04233157AEBDEA06AF25F /* Pods-MorseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MorseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MorseTests/Pods-MorseTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E03DF70ED43225DB5E7AC632 /* Pods-MorseUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MorseUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MorseUITests/Pods-MorseUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		EEB7D0E6EBD25A5016A0D874 /* Pods-Morse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Morse.release.xcconfig"; path = "Pods/Target Support Files/Pods-Morse/Pods-Morse.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B605CC631D5B77650060AD72 /* AVFoundation.framework in Frameworks */,
+				18A21BA5E1D504CCF3875F14 /* Pods_Morse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				539F801724E54E572FC02AE3 /* Pods_MorseTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,12 +108,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5C5D6692618572424E80112 /* Pods_MorseUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3ACD8B8FDBFB25928483D539 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0BF3878D29FA5D7A49D03DB7 /* Pods-Morse.debug.xcconfig */,
+				EEB7D0E6EBD25A5016A0D874 /* Pods-Morse.release.xcconfig */,
+				C6F04233157AEBDEA06AF25F /* Pods-MorseTests.debug.xcconfig */,
+				0D841D32B08BB1B9358297DE /* Pods-MorseTests.release.xcconfig */,
+				E03DF70ED43225DB5E7AC632 /* Pods-MorseUITests.debug.xcconfig */,
+				6B7700E8874BFFB6D4E3C5EF /* Pods-MorseUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6F13F73FC894D1C0A831A57B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB8C47C9AA43CA6125318E66 /* Pods_Morse.framework */,
+				7B89A1A8DBFDA82FD2DBABC8 /* Pods_MorseTests.framework */,
+				6A4BA23EC2653F86DC0B9AF9 /* Pods_MorseUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B605CC231D5B3F670060AD72 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +146,8 @@
 				B605CC461D5B3F680060AD72 /* MorseTests */,
 				B605CC511D5B3F680060AD72 /* MorseUITests */,
 				B605CC2D1D5B3F670060AD72 /* Products */,
+				3ACD8B8FDBFB25928483D539 /* Pods */,
+				6F13F73FC894D1C0A831A57B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,7 +202,6 @@
 		B6227BED1D87F78000AE5C69 /* Play controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B605CC661D5CDCC20060AD72 /* VibrationsController.swift */,
 				B605CC641D5C781D0060AD72 /* TorchController.swift */,
 				B6B166FB1D671E1A005AE623 /* AudioController.swift */,
 			);
@@ -188,9 +225,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B605CC571D5B3F680060AD72 /* Build configuration list for PBXNativeTarget "Morse" */;
 			buildPhases = (
+				F39B6DBC42A0FAA8221257D3 /* [CP] Check Pods Manifest.lock */,
 				B605CC281D5B3F670060AD72 /* Sources */,
 				B605CC291D5B3F670060AD72 /* Frameworks */,
 				B605CC2A1D5B3F670060AD72 /* Resources */,
+				0FCE4F390F55A78F13AC1ECE /* [CP] Embed Pods Frameworks */,
+				B9B892E581C0B25BFDECBC4A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -205,9 +245,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B605CC5A1D5B3F680060AD72 /* Build configuration list for PBXNativeTarget "MorseTests" */;
 			buildPhases = (
+				A148C9E6E31ACCC389D69F40 /* [CP] Check Pods Manifest.lock */,
 				B605CC3F1D5B3F680060AD72 /* Sources */,
 				B605CC401D5B3F680060AD72 /* Frameworks */,
 				B605CC411D5B3F680060AD72 /* Resources */,
+				5C8CCA8A7F0D2B77CCC77276 /* [CP] Embed Pods Frameworks */,
+				12A46547ECD265F11AD60860 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -223,9 +266,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B605CC5D1D5B3F680060AD72 /* Build configuration list for PBXNativeTarget "MorseUITests" */;
 			buildPhases = (
+				CC159EC00A56947DFE64BA58 /* [CP] Check Pods Manifest.lock */,
 				B605CC4A1D5B3F680060AD72 /* Sources */,
 				B605CC4B1D5B3F680060AD72 /* Frameworks */,
 				B605CC4C1D5B3F680060AD72 /* Resources */,
+				5E7FE11B6EE312C8F7B60371 /* [CP] Copy Pods Resources */,
+				C57BAB61C79272E9F71A4C50 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -244,19 +290,22 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Владимир Молчанов";
 				TargetAttributes = {
 					B605CC2B1D5B3F670060AD72 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = SM43G3Z2Z7;
+						LastSwiftMigration = 0800;
 					};
 					B605CC421D5B3F680060AD72 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = B605CC2B1D5B3F670060AD72;
 					};
 					B605CC4D1D5B3F680060AD72 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = B605CC2B1D5B3F670060AD72;
 					};
 				};
@@ -312,12 +361,149 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0FCE4F390F55A78F13AC1ECE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Morse/Pods-Morse-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		12A46547ECD265F11AD60860 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MorseTests/Pods-MorseTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5C8CCA8A7F0D2B77CCC77276 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MorseTests/Pods-MorseTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E7FE11B6EE312C8F7B60371 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MorseUITests/Pods-MorseUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A148C9E6E31ACCC389D69F40 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B9B892E581C0B25BFDECBC4A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Morse/Pods-Morse-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C57BAB61C79272E9F71A4C50 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MorseUITests/Pods-MorseUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC159EC00A56947DFE64BA58 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F39B6DBC42A0FAA8221257D3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B605CC281D5B3F670060AD72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B605CC671D5CDCC20060AD72 /* VibrationsController.swift in Sources */,
 				B6227BF61D880B5A00AE5C69 /* Extensions.swift in Sources */,
 				B605CC321D5B3F670060AD72 /* ViewController.swift in Sources */,
 				B605CC651D5C781D0060AD72 /* TorchController.swift in Sources */,
@@ -396,6 +582,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -406,8 +593,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -434,6 +623,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -441,6 +631,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -451,8 +642,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -471,22 +664,27 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		B605CC581D5B3F680060AD72 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BF3878D29FA5D7A49D03DB7 /* Pods-Morse.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = Morse/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.Morse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -496,16 +694,19 @@
 		};
 		B605CC591D5B3F680060AD72 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEB7D0E6EBD25A5016A0D874 /* Pods-Morse.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = Morse/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.Morse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -515,46 +716,54 @@
 		};
 		B605CC5B1D5B3F680060AD72 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C6F04233157AEBDEA06AF25F /* Pods-MorseTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MorseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.MorseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Morse.app/Morse";
 			};
 			name = Debug;
 		};
 		B605CC5C1D5B3F680060AD72 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D841D32B08BB1B9358297DE /* Pods-MorseTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MorseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.MorseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Morse.app/Morse";
 			};
 			name = Release;
 		};
 		B605CC5E1D5B3F680060AD72 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E03DF70ED43225DB5E7AC632 /* Pods-MorseUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MorseUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.MorseUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Morse;
 			};
 			name = Debug;
 		};
 		B605CC5F1D5B3F680060AD72 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B7700E8874BFFB6D4E3C5EF /* Pods-MorseUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MorseUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.self.MorseUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Morse;
 			};
 			name = Release;

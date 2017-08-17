@@ -9,77 +9,77 @@
 import Foundation
 
 enum Signal {
-    case Dot
-    case Dash
-    case Gap(GapType)
+    case dot
+    case dash
+    case gap(GapType)
     
-    static func fromDefaults(identifier: String) -> Signal? {
+    static func fromDefaults(_ identifier: String) -> Signal? {
         switch identifier {
         case "Dot":
-            return Signal.Dot
+            return Signal.dot
         case "Dash":
-            return Signal.Dash
+            return Signal.dash
         case "GapBetweenMarks":
-            return Signal.Gap(.BetweenMarks)
+            return Signal.gap(.betweenMarks)
         case "GapBetweenLetters":
-            return Signal.Gap(.BetweenLetters)
+            return Signal.gap(.betweenLetters)
         case "GapBetweenWords":
-            return Signal.Gap(.BetweenWords)
+            return Signal.gap(.betweenWords)
         default: return nil
         }
     }
     
     enum GapType: Float {
-        case BetweenMarks = 1.0
-        case BetweenLetters = 3.0
-        case BetweenWords = 7.0
+        case betweenMarks = 1.0
+        case betweenLetters = 3.0
+        case betweenWords = 7.0
     }
     
     enum TorchSignal {
-        case TorchOn, TorchOff
+        case torchOn, torchOff
     }
     
     enum AudioSignal {
-        case ShortBeep, LongBeep, Silence
+        case shortBeep, longBeep, silence
     }
     
     var duration: Float {
         switch self {
-        case .Dot: return 1.0
-        case .Dash: return 3.0
-        case let .Gap(type):
+        case .dot: return 1.0
+        case .dash: return 3.0
+        case let .gap(type):
             return type.rawValue
         }
     }
     
     var value: Any {
         switch self {
-        case .Dot:
+        case .dot:
             switch currentSignalType {
-            case .StringSignal:
-                return "."
-            case .TorchSignal:
-                return TorchSignal.TorchOn
-            case .AudioSignal:
-                return AudioSignal.ShortBeep
+            case .stringSignal:
+                return "∙"
+            case .torchSignal:
+                return TorchSignal.torchOn
+            case .audioSignal:
+                return AudioSignal.shortBeep
             }
-        case .Dash:
+        case .dash:
             switch currentSignalType {
-            case .StringSignal:
-                return "-"
-            case .TorchSignal:
-                return TorchSignal.TorchOn
-            case .AudioSignal:
-                return AudioSignal.LongBeep
+            case .stringSignal:
+                return "⎯"
+            case .torchSignal:
+                return TorchSignal.torchOn
+            case .audioSignal:
+                return AudioSignal.longBeep
             }
-        case .Gap:
+        case .gap:
             switch currentSignalType {
-            case .StringSignal:
-                return "_"
-            case .TorchSignal:
-                return TorchSignal.TorchOff
-            case .AudioSignal:
-                return AudioSignal.Silence
+            case .stringSignal:
+                return " "
+            case .torchSignal:
+                return TorchSignal.torchOff
+            case .audioSignal:
+                return AudioSignal.silence
             }
         }
     }
@@ -87,12 +87,12 @@ enum Signal {
 
 
 enum SignalType {
-    case StringSignal
-    case TorchSignal
-    case AudioSignal
+    case stringSignal
+    case torchSignal
+    case audioSignal
 }
 
-var currentSignalType: SignalType = .TorchSignal
+var currentSignalType: SignalType = .torchSignal
 
 
 
@@ -108,19 +108,19 @@ enum ITUProsign: String {
     var genericSignal: [Signal] {
         var signal: [Signal] = self.rawValue.characters.map { mark in
             switch mark {
-            case ".": return Signal.Dot
-            case "-": return Signal.Dash
-            default: return Signal.Gap(.BetweenMarks)
+            case ".": return Signal.dot
+            case "-": return Signal.dash
+            default: return Signal.gap(.betweenMarks)
             }
         }
-        signal.addNewElementBetweenElements(newElement: .Gap(.BetweenMarks))
+        signal.addNewElementBetweenElements(newElement: .gap(.betweenMarks))
         return signal
     }
 }
 
 
 func getOrCreateITUGenericDictionary() {
-    if NSUserDefaults.standardUserDefaults().objectForKey("ITUGenericDict") == nil {
+    if UserDefaults.standard.object(forKey: "ITUGenericDict") == nil {
         var archievableDict: [String : AnyObject] = [:]
         for (char,code) in ITUStringDictionary {
             var mappedCode: [String] = code.characters.map { mark in
@@ -131,23 +131,23 @@ func getOrCreateITUGenericDictionary() {
                 }
             }
             mappedCode.addNewElementBetweenElements(newElement: "GapBetweenMarks")
-            archievableDict.updateValue(mappedCode, forKey: String(char))
+            archievableDict.updateValue(mappedCode as AnyObject, forKey: String(char))
         }
-        let archive = NSKeyedArchiver.archivedDataWithRootObject(archievableDict)
-        NSUserDefaults.standardUserDefaults().setObject(archive, forKey: "ITUGenericDict")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let archive = NSKeyedArchiver.archivedData(withRootObject: archievableDict)
+        UserDefaults.standard.set(archive, forKey: "ITUGenericDict")
+        UserDefaults.standard.synchronize()
         print("Generic dict has been saved in NSUserDefaults")
     }
     
-    let data = NSUserDefaults.standardUserDefaults().objectForKey("ITUGenericDict")!
-    let archievedDict = NSKeyedUnarchiver.unarchiveObjectWithData(data as! NSData) as! [String: [AnyObject]]
+    let data = UserDefaults.standard.object(forKey: "ITUGenericDict")!
+    let archievedDict = NSKeyedUnarchiver.unarchiveObject(with: data as! Data) as! [String: [AnyObject]]
     let mappedDict = archievedDict.map({ (key, value) -> (Character, [Signal]) in
         let char = key.characters.first!
         let signals = (value as! [String]).map({ Signal.fromDefaults($0)!})
         return (char, signals)
     })
     ITUGenericDictionary = Dictionary(mappedDict)
-    print("GenericDict: \(ITUGenericDictionary.sort { $0.0 < $1.0 })")
+    print("GenericDict: \(ITUGenericDictionary.sorted { $0.0 < $1.0 })")
 }
 
 var ITUGenericDictionary: [Character:[Signal]]!

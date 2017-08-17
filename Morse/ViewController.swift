@@ -10,49 +10,50 @@ import UIKit
 
 //MARK: - TextView delegate
 extension ViewController: UITextViewDelegate {
-    func textViewDidChange(textView: UITextView) {
-        if textView.hasText() {
-            bTransmitWithTorch.enabled = true
-            bTransmitWithSound.enabled = true
-            inputTextView.attributedText = NSAttributedString(string: inputTextView.text, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(20.0)])
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.hasText {
+            bTransmitWithTorch.isEnabled = true
+            bTransmitWithSound.isEnabled = true
+            inputTextView.attributedText = NSAttributedString(string: inputTextView.text, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 20.0)])
             if morseRepresentation != nil {
-                morseStringRepresentationViewLabel.hidden = true
+                morseStringRepresentationViewLabel.isHidden = true
                 morseRepresentation.generateStringMessage(fromString: textView.text)
-                morseStringRepresentationTextView.attributedText = NSAttributedString(string: morseRepresentation.stringRepresentation, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(20.0)])
+                morseStringRepresentationTextView.attributedText = NSAttributedString(string: morseRepresentation.stringRepresentation, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 20.0)])
             } else {
-                morseStringRepresentationViewLabel.hidden = true
+                morseStringRepresentationViewLabel.isHidden = true
                 morseRepresentation = MorseRepresentation(string: textView.text)
-                morseStringRepresentationTextView.attributedText = NSAttributedString(string: morseRepresentation.stringRepresentation, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(20.0)])
+                morseStringRepresentationTextView.attributedText = NSAttributedString(string: morseRepresentation.stringRepresentation, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 20.0)])
             }
         } else {
-            morseStringRepresentationViewLabel.hidden = false
+            morseStringRepresentationViewLabel.isHidden = false
             morseStringRepresentationTextView.attributedText = NSAttributedString(string: "")
-            bTransmitWithTorch.enabled = false
-            bTransmitWithSound.enabled = false
+            bTransmitWithTorch.isEnabled = false
+            bTransmitWithSound.isEnabled = false
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         progressView.setProgress(0.0, animated: false)
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
-        if textView.hasText() {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.hasText {
             if morseRepresentation != nil {
                 morseRepresentation.generateGenericMessage(fromString: textView.text)
             }
         } else {
-            inputViewDescriptionLabel.hidden = false
+            inputViewDescriptionLabel.isHidden = false
             morseRepresentation = nil
         }
         animateInputViewDecrease()
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
         }
+        
         return true
     }
 }
@@ -60,7 +61,7 @@ extension ViewController: UITextViewDelegate {
 class ViewController: UIViewController {
 
 //MARK: - Constants
-    private let _kGapBetweenKeyboardAndInputView: CGFloat = 10.0
+    fileprivate let _kGapBetweenKeyboardAndInputView: CGFloat = 10.0
     
 //MARK: - UI Variables
     @IBOutlet weak var inputTextView: UITextView!
@@ -68,12 +69,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var bTransmitWithTorch: UIButton!
     @IBOutlet weak var bTransmitWithSound: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
-    private var inputViewDescriptionLabel: UILabel!
-    private var morseStringRepresentationViewLabel: UILabel!
+    fileprivate var inputViewDescriptionLabel: UILabel!
+    fileprivate var morseStringRepresentationViewLabel: UILabel!
     
     @IBOutlet weak var inputViewHeightConstraint: NSLayoutConstraint!
-//    private var orientationDidChange: Bool = false
-    
     
     var morseRepresentation: MorseRepresentation!
 
@@ -94,21 +93,20 @@ class ViewController: UIViewController {
         
         inputTextView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(transmissionWillBegin(_:)), name: transmissionWillBeginNotificationKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(transmissionDidFinish(_:)), name: transmissionDidFinishNotificationKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustSubviewsForKeyboardNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(adjustSubviewsForKeyboardNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orientationChanged(_:)), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(transmissionWillBegin(_:)), name: NSNotification.Name(rawValue: transmissionWillBeginNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(transmissionDidFinish(_:)), name: NSNotification.Name(rawValue: transmissionDidFinishNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustSubviewsForKeyboardNotification(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustSubviewsForKeyboardNotification(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         setupDescriptionLabels()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
  
     override func didReceiveMemoryWarning() {
@@ -119,56 +117,50 @@ class ViewController: UIViewController {
     func setupDescriptionLabels() {
         inputViewDescriptionLabel = UILabel()
         inputViewDescriptionLabel.textColor = UIColor( red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0 )
-        inputViewDescriptionLabel.font = UIFont.systemFontOfSize(16.0)
+        inputViewDescriptionLabel.font = UIFont.systemFont(ofSize: 16.0)
         inputViewDescriptionLabel.text = ~"inputview_descriptionLabel_text"
-        inputViewDescriptionLabel.textAlignment = .Center
+        inputViewDescriptionLabel.textAlignment = .center
         inputViewDescriptionLabel.sizeToFit()
         inputViewDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         inputTextView.addSubview(inputViewDescriptionLabel)
         
-        inputViewDescriptionLabel.centerXAnchor.constraintEqualToAnchor(inputTextView.centerXAnchor).active = true
-        inputViewDescriptionLabel.centerYAnchor.constraintEqualToAnchor(inputTextView.centerYAnchor).active = true
+        inputViewDescriptionLabel.centerXAnchor.constraint(equalTo: inputTextView.centerXAnchor).isActive = true
+        inputViewDescriptionLabel.centerYAnchor.constraint(equalTo: inputTextView.centerYAnchor).isActive = true
         
         
         morseStringRepresentationViewLabel = UILabel()
         morseStringRepresentationViewLabel.textColor = UIColor( red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0 )
-        morseStringRepresentationViewLabel.font = UIFont.systemFontOfSize(16.0)
+        morseStringRepresentationViewLabel.font = UIFont.systemFont(ofSize: 16.0)
         morseStringRepresentationViewLabel.text = ~"morseStringRepresentationView_descriptionLabel_text"
-        morseStringRepresentationViewLabel.textAlignment = .Center
+        morseStringRepresentationViewLabel.textAlignment = .center
         morseStringRepresentationViewLabel.sizeToFit()
         morseStringRepresentationViewLabel.translatesAutoresizingMaskIntoConstraints = false
         morseStringRepresentationTextView.addSubview(morseStringRepresentationViewLabel)
         
-        morseStringRepresentationViewLabel.centerXAnchor.constraintEqualToAnchor(morseStringRepresentationTextView.centerXAnchor).active = true
-        morseStringRepresentationViewLabel.centerYAnchor.constraintEqualToAnchor(morseStringRepresentationTextView.centerYAnchor).active = true
+        morseStringRepresentationViewLabel.centerXAnchor.constraint(equalTo: morseStringRepresentationTextView.centerXAnchor).isActive = true
+        morseStringRepresentationViewLabel.centerYAnchor.constraint(equalTo: morseStringRepresentationTextView.centerYAnchor).isActive = true
         
     }
 
     
 
 //MARK: - IBActions
-    @IBAction func transmitWithTorch(sender: AnyObject) {
-        morseRepresentation.transmit(with: .TorchSignal, progressCallback: { (progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) -> Void in
+    @IBAction func transmitWithTorch(_ sender: AnyObject) {
+        morseRepresentation.transmit(with: .torchSignal, progressCallback: { (progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) -> Void in
             self.setTransmitProgress(progress, currentIndexInMorseString: currentIndexInMorseString, currentIndexInOriginText: currentIndexInOriginText)
         })
     }
     
     
-    @IBAction func transmitWithSound(sender: AnyObject) {
-        morseRepresentation.transmit(with: .AudioSignal, progressCallback: { (progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) -> Void in
+    @IBAction func transmitWithSound(_ sender: AnyObject) {
+        morseRepresentation.transmit(with: .audioSignal, progressCallback: { (progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) -> Void in
             self.setTransmitProgress(progress, currentIndexInMorseString: currentIndexInMorseString, currentIndexInOriginText: currentIndexInOriginText)
         })
     }
-    
-    
-    
-//    @IBAction func transmitWithVibrations(sender: AnyObject) {
-//        morseRepresentation.transmitWithVibrations()
-//    }
     
 //MARK: - Transmittion progress
     
-    func setTransmitProgress(progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) {
+    func setTransmitProgress(_ progress: Float, currentIndexInMorseString: Int, currentIndexInOriginText: Int) {
         if progress == 0.0 {
             progressView.setProgress(0.0, animated: false)
         } else {
@@ -182,14 +174,12 @@ class ViewController: UIViewController {
     }
     
     func getStringWithAttributes(atIndex index: Int, atRange range: NSRange?, fromString string: String) -> NSMutableAttributedString {
-        print("index to color:\(index)")
-        print("string length: \(string.characters.count)")
-        let str = NSMutableAttributedString(string: string, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(20.0)])
+        let str = NSMutableAttributedString(string: string, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 20.0)])
     
         if index < str.string.characters.count {
             str.addAttributes([NSForegroundColorAttributeName:UIColor ( red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0 )], range: NSMakeRange(index, 1))
             if let sRange = range {
-                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range: sRange)
+                str.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray, range: sRange)
             }
         }
         
@@ -207,31 +197,29 @@ class ViewController: UIViewController {
     
 //MARK: - Animation
     func animateInputViewIncrease(forNewHeight newHeight: CGFloat) {
-        print("animateInputViewIncrease(forNewHeight: \(newHeight))")
         self.inputViewHeightConstraint.constant = newHeight
-        UIView.animateWithDuration(0.5,
+        UIView.animate(withDuration: 0.5,
                                    delay: 0.0,
                                    usingSpringWithDamping: 0.7,
                                    initialSpringVelocity: 0.5,
-                                   options: UIViewAnimationOptions.CurveEaseOut,
+                                   options: UIViewAnimationOptions.curveEaseOut,
                                    animations: {
                                     self.view.layoutIfNeeded()
                                     self.inputViewDescriptionLabel.alpha = 0
             },
                                    completion: { finished in
-                                    self.inputViewDescriptionLabel.hidden = true
+                                    self.inputViewDescriptionLabel.isHidden = true
             }
         )
     }
     
     func animateInputViewDecrease() {
-        print("animateInputViewDecrease()")
         self.inputViewHeightConstraint.constant = 100.0
-        UIView.animateWithDuration(0.5,
+        UIView.animate(withDuration: 0.5,
                                    delay: 0.0,
                                    usingSpringWithDamping: 1.0,
                                    initialSpringVelocity: 1.0,
-                                   options: UIViewAnimationOptions.CurveEaseIn,
+                                   options: UIViewAnimationOptions.curveEaseIn,
                                    animations: {
                                     self.view.layoutIfNeeded()
                                     self.inputViewDescriptionLabel.alpha = 1
@@ -241,48 +229,35 @@ class ViewController: UIViewController {
     
     
 //MARK: - Other
-    func injected() {
-        print("I've been injected: \(self)")
-    }
-        
-    func transmissionWillBegin(notification: NSNotification) {
-        inputTextView.editable = false
-        inputTextView.selectable = false
-        bTransmitWithTorch.enabled = false
-        bTransmitWithSound.enabled = false
+    func transmissionWillBegin(_ notification: Notification) {
+        inputTextView.isEditable = false
+        inputTextView.isSelectable = false
+        bTransmitWithTorch.isEnabled = false
+        bTransmitWithSound.isEnabled = false
     }
     
-    func transmissionDidFinish(notification: NSNotification) {
-        inputTextView.editable = true
-        inputTextView.selectable = true
-        bTransmitWithTorch.enabled = true
-        bTransmitWithSound.enabled = true
+    func transmissionDidFinish(_ notification: Notification) {
+        inputTextView.isEditable = true
+        inputTextView.isSelectable = true
+        bTransmitWithTorch.isEnabled = true
+        bTransmitWithSound.isEnabled = true
     }
     
-    func adjustSubviewsForKeyboardNotification(notification: NSNotification) {
+    func adjustSubviewsForKeyboardNotification(_ notification: Notification) {
         switch notification.name {
-        case UIKeyboardWillShowNotification:
-//            print("UIKeyboardWillShowNotification: \n\(notification.userInfo)")
-            let info = notification.userInfo!
-            let value: AnyObject = info[UIKeyboardFrameEndUserInfoKey]!
-            let rawFrame = value.CGRectValue()
-            let keyboardFrame = view.convertRect(rawFrame, fromView: nil) // Возможно, это лишнее
+        case NSNotification.Name.UIKeyboardWillShow:
+            let info = (notification as NSNotification).userInfo!
+            let value: AnyObject = info[UIKeyboardFrameEndUserInfoKey]! as AnyObject
+            let rawFrame = value.cgRectValue
+            let keyboardFrame = view.convert(rawFrame!, from: nil) // Возможно, это лишнее
             let keyboardHeight = keyboardFrame.height
             let newInputViewHeight = view.bounds.height - keyboardHeight - _kGapBetweenKeyboardAndInputView - inputTextView.frame.minY
             if inputViewHeightConstraint.constant != newInputViewHeight {
                 animateInputViewIncrease(forNewHeight: newInputViewHeight)
             }
-//        case UIKeyboardWillHideNotification:
-////            print("UIKeyboardWillHideNotification: \n\(notification.userInfo)")
-//            animateInputViewDecrease()
         default:
             break
         }
     }
-    
-//    func orientationChanged(notification: NSNotification) {
-//        orientationDidChange = true
-//    }
-
 }
 

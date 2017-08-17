@@ -8,7 +8,7 @@
 
 import Foundation
 
-prefix operator ~ {}
+prefix operator ~
 prefix func ~(key: String) -> String {
     return NSLocalizedString(key, comment: "")
 }
@@ -16,8 +16,8 @@ prefix func ~(key: String) -> String {
 extension Array {
     mutating func addNewElementBetweenElements(newElement element: Element) {
         var c = 1
-        for _ in (self.startIndex..<self.endIndex.predecessor()) {
-            self.insert(element, atIndex: c)
+        for _ in (self.startIndex..<(self.endIndex - 1)) {
+            self.insert(element, at: c)
             c = c + 2
         }
     }

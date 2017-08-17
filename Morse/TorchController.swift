@@ -10,22 +10,22 @@ import UIKit
 import AVFoundation
 
 class TorchController: NSObject {
-    let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+    let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)!
     var torchIsAvailable: Bool {
-        if device.hasTorch && device.torchAvailable && device.isTorchModeSupported(.On) && device.isTorchModeSupported(.Off) {
+        if device.hasTorch && device.isTorchAvailable && device.isTorchModeSupported(.on) && device.isTorchModeSupported(.off) {
             return true
         } else {
             return false
         }
     }
-    private var _dotLengthInSeconds: NSTimeInterval!
-    private var _message: [Signal.TorchSignal]!
-    private var _currentSignalIndex = 0
-    private var _timer: NSTimer!
+    fileprivate var _dotLengthInSeconds: TimeInterval!
+    fileprivate var _message: [Signal.TorchSignal]!
+    fileprivate var _currentSignalIndex = 0
+    fileprivate var _timer: Timer!
     var torchProgressCallback: ((Float, Int) -> Void)!
     var fromTorchSignalToGenericCorrTable: [Int:Int] = [:]
     
-    init(dotLengthInSeconds: NSTimeInterval) {
+    init(dotLengthInSeconds: TimeInterval) {
         _dotLengthInSeconds = dotLengthInSeconds
         super.init()
     }
@@ -34,16 +34,14 @@ class TorchController: NSObject {
         print("TorchController has been deinitialized")
     }
     
-    func transmitMessage(message: [Signal], torchProgressCallback: (Float, Int) -> Void ) {
-        print("transmitMessage is called")
+    func transmitMessage(_ message: [Signal], torchProgressCallback: @escaping (Float, Int) -> Void ) {
         _message = transformMessage(message)
-        print("_message: \(_message)")
         self.torchProgressCallback = torchProgressCallback
         self.torchProgressCallback(0.0, 0)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(transmissionWillBeginNotificationKey, object: self, userInfo: nil)
-        dispatch_async(dispatch_get_main_queue()){
-            self._timer = NSTimer.scheduledTimerWithTimeInterval(self._dotLengthInSeconds,
+        NotificationCenter.default.post(name: Notification.Name(rawValue: transmissionWillBeginNotificationKey), object: self, userInfo: nil)
+        DispatchQueue.main.async{
+            self._timer = Timer.scheduledTimer(timeInterval: self._dotLengthInSeconds,
                                                                  target: self,
                                                                  selector: #selector(TorchController.manageTorch(_:)),
                                                                  userInfo: self,
@@ -51,15 +49,15 @@ class TorchController: NSObject {
         }
     }
     
-    func transformMessage(message: [Signal]) -> [Signal.TorchSignal] {
+    func transformMessage(_ message: [Signal]) -> [Signal.TorchSignal] {
         var output: [Signal.TorchSignal] = []
-        currentSignalType = .TorchSignal
+        currentSignalType = .torchSignal
         
         var key = 0
         var value = 0
         for signal in message {
-            let signalArray = Array<Signal.TorchSignal>(count: Int(round(signal.duration)), repeatedValue: signal.value as! Signal.TorchSignal)
-            output.appendContentsOf(signalArray)
+            let signalArray = Array<Signal.TorchSignal>(repeating: signal.value as! Signal.TorchSignal, count: Int(round(signal.duration)))
+            output.append(contentsOf: signalArray)
             
             for _ in signalArray {
                 fromTorchSignalToGenericCorrTable.updateValue(value, forKey: key)
@@ -67,36 +65,32 @@ class TorchController: NSObject {
             }
             value += 1
         }
-        print(fromTorchSignalToGenericCorrTable.sort { $0.0 < $1.0 })
         return output
     }
     
-    func manageTorch(timer: NSTimer) {
-        if _message[_currentSignalIndex] == Signal.TorchSignal.TorchOn && device.torchMode == .Off {
+    func manageTorch(_ timer: Timer) {
+        if _message[_currentSignalIndex] == Signal.TorchSignal.torchOn && device.torchMode == .off {
             if let _ = try? device.lockForConfiguration() {
-                device.torchMode = .On
+                device.torchMode = .on
                 device.unlockForConfiguration()
             }
-        } else if _message[_currentSignalIndex] == Signal.TorchSignal.TorchOff && device.torchMode == .On {
+        } else if _message[_currentSignalIndex] == Signal.TorchSignal.torchOff && device.torchMode == .on {
             if let _ = try? device.lockForConfiguration() {
-                device.torchMode = .Off
+                device.torchMode = .off
                 device.unlockForConfiguration()
             }
         }
         
         let currentProgress = Float(_currentSignalIndex)/Float(_message.count)
-        print("currentProgress: \(currentProgress)")
-        print("currentSignalIndex:\(_currentSignalIndex)")
         let userInfo = timer.userInfo as! TorchController
         userInfo.torchProgressCallback(currentProgress, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
         if _currentSignalIndex == _message.indices.last! {
             _timer.invalidate()
-            NSNotificationCenter.defaultCenter().postNotificationName(transmissionDidFinishNotificationKey, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: transmissionDidFinishNotificationKey), object: self, userInfo: nil)
             userInfo.torchProgressCallback(1.0, fromTorchSignalToGenericCorrTable[_currentSignalIndex]!)
         } else {
-            _currentSignalIndex = _currentSignalIndex.successor()
+            _currentSignalIndex = (_currentSignalIndex + 1)
         }
-        print("newCurrentSignalIndex:\(_currentSignalIndex)")
     }
     
 }
